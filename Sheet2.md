@@ -73,3 +73,36 @@ Clauses
 Goal
     dot([1,2,3], [4,5,6], D).
 ```
+
+## Question 5
+
+- Write a program that calculates the product of two sets
+- Sample goal : product([a,b],[c,d,f],L)
+- L=[(a,c),(a,d),(a,f),(b,c),(b,d),(b,f)]
+
+```prolog
+Domains
+    lst = Symbol*
+    pair = lst*
+Predicates
+    nondeterm product(lst, lst, pair)
+    nondeterm product_element(Symbol, lst, pair)
+    nondeterm append(pair, pair, pair)
+    
+
+Clauses
+    append([], L, L).
+    append([H|T], L, [H|T1]) :- append(T, L, T1).
+    
+    product([], _, []).
+    product([H|T], L, P) :-
+        product_element(H, L, PE),
+        product(T, L, P1),
+        append(PE, P1, P).
+
+    product_element(_, [], []).
+    product_element(X, [H|T], [[X, H]|PE]) :-
+        product_element(X, T, PE).
+Goal
+    product([a,b], [c,d,f], L).
+```
